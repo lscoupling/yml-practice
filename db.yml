@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+  labels:
+    app: db
+spec:
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db
+        image: mysql
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: 123456
+          - name: MYSQL_DATABASE
+            value: expmpledb
+          - name: MYSQL_USER
+            value: 123456
+          - name: MYSQL_PASSWORD
+            value: 123456  
+  selector:
+    matchLabels:
+      app: db
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  type: ClusterIP
+  ports:
+    - targetPort: 3306
+      port: 3306
+  selector:
+    app: db
